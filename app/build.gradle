@@ -46,7 +46,7 @@ dependencies {
 
     ////Third part library
     //apollo
-//    implementation "com.apollographql.apollo:apollo-android-support:$versions.apolloVersion"
-//    implementation "com.apollographql.apollo:apollo-runtime:$versions.apolloVersion"
+    implementation "com.apollographql.apollo:apollo-android-support:$versions.apolloVersion"
+    implementation "com.apollographql.apollo:apollo-runtime:$versions.apolloVersion"
     implementation "com.apollographql.apollo:apollo-coroutines-support:$versions.apolloVersion"
 }
