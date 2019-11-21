@@ -5,7 +5,11 @@ import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
+import androidx.lifecycle.Observer
+import com.example.primacountries.utils.Status
 import kotlinx.android.synthetic.main.activity_item_detail.*
+import androidx.lifecycle.ViewModelProviders
+import com.example.primacountries.ui.viewmodel.CountriesViewModel
 
 /**
  * An activity representing a single Item detail screen. This
@@ -14,6 +18,8 @@ import kotlinx.android.synthetic.main.activity_item_detail.*
  * in a [ItemListActivity].
  */
 class ItemDetailActivity : AppCompatActivity() {
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

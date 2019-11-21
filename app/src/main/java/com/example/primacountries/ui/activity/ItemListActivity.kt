@@ -9,8 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 
 import com.example.countriesapollocoroutines.dummy.DummyContent
+import com.example.primacountries.ui.repository.database.model.Country
+import com.example.primacountries.ui.viewmodel.CountriesViewModel
+import com.example.primacountries.utils.Status
 import kotlinx.android.synthetic.main.activity_item_list.*
 import kotlinx.android.synthetic.main.item_list_content.view.*
 import kotlinx.android.synthetic.main.item_list.*
@@ -30,10 +35,26 @@ class ItemListActivity : AppCompatActivity() {
      * device.
      */
     private var twoPane: Boolean = false
+    lateinit var countriesViewModel: CountriesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item_list)
+
+        countriesViewModel = ViewModelProviders.of(this).get(CountriesViewModel::class.java)
+        countriesViewModel.countriesList.observe(this, Observer {response->
+            when(response.status) {
+                Status.SUCCESS -> {
+                    response.data?.let { setupRecyclerView(item_list, it) }
+                }
+                Status.ERROR -> {
+
+                }
+                Status.LOADING -> {
+
+                }
+            }
+        })
 
         setSupportActionBar(toolbar)
         toolbar.title = title
@@ -50,17 +71,15 @@ class ItemListActivity : AppCompatActivity() {
             // activity should be in two-pane mode.
             twoPane = true
         }
-
-        setupRecyclerView(item_list)
     }
 
-    private fun setupRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, twoPane)
+    private fun setupRecyclerView(recyclerView: RecyclerView, items: List<Country>) {
+        recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, items, twoPane)
     }
 
     class SimpleItemRecyclerViewAdapter(
         private val parentActivity: ItemListActivity,
-        private val values: List<DummyContent.DummyItem>,
+        private val values: List<Country>,
         private val twoPane: Boolean
     ) :
         RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
@@ -97,8 +116,8 @@ class ItemListActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = values[position]
-            holder.idView.text = item.id
-            holder.contentView.text = item.content
+            holder.idView.text = item.region
+            holder.contentView.text = item.name
 
             with(holder.itemView) {
                 tag = item
